@@ -1,0 +1,15 @@
+{
+    "name": "renaissance/module-style-vault",
+    "description": "Renaissance Themes: Magento_Vault module styling",
+    "type": "magento2-component",
+    "license": "OSL-3.0",
+    "require": {
+        "renaissance/theme-frontend-open-source": "^1.0",
+        "magento/module-vault": "*"
+    },
+    "extra": {
+        "map": [
+            ["module.css", "app/design/frontend/Renaissance/open-source/Magento_Vault/web/css/source/module.css"]
+        ]
+    }
+}

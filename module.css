@@ -1,0 +1,149 @@
+/* Vanilla/blank: Magento_Vault module CSS.
+   The "Stored Payment Methods" account page (vault/cards/listaction): the
+   .my-credit-cards table (card type / number / expiration / status / delete)
+   and the delete-confirmation modal (.my-credit-cards-popup).
+
+   Ported from blank's Magento_Vault/web/css/source/_module.less against the
+   COMPILED pub/static/frontend/Magento/blank css (styles-m + styles-l). blank
+   ships NO checkout-side vault rules (no .payment-method-vault selector
+   anywhere in the blank theme); the vault token UI on checkout is styled by
+   the individual payment integrations, so this file is account-page only.
+
+   What is CONSUMED, not re-implemented:
+   - The table skin (borders, th/td padding, the mobile data-th card reflow)
+     is the lib tables component; this file only tweaks the status cell.
+   - The modal shell (.modal-popup, .modal-footer) is the lib modal component;
+     only the footer text alignment is changed here.
+   - The Delete / Cancel <button>s render as inline link text (blank
+     .lib-button-reset() + .lib-button-as-link()). The markup carries no
+     .action-as-link class, so the lib's as-link skin is drawn here from its
+     --button-as-link-* component tokens, same as the GiftMessage / Checkout ports. */
+@layer modules {
+
+  /* ===== the stored-cards table ========================================== */
+
+  .my-credit-cards .status {
+    font-style: italic;
+  }
+
+  /* the Delete action: a <button> that reads as a plain text link */
+  .my-credit-cards .action.delete {
+    display: inline;
+    width: auto;
+    margin: var(--button-as-link-margin);
+    padding: var(--button-as-link-padding);
+    line-height: var(--button-as-link-line-height);
+    font-weight: var(--font-weight-regular);
+    color: var(--button-as-link-color);
+    text-decoration: var(--button-as-link-text-decoration);
+    background: none;
+    border: 0;
+    border-radius: 0;
+
+    &:hover {
+      color: var(--button-as-link-hover-color);
+      text-decoration: var(--button-as-link-hover-text-decoration);
+      background: none;
+      border: 0;
+    }
+
+    &:active,
+    &:focus {
+      background: none;
+      border: 0;
+    }
+
+    /* pressed link keeps the underline (blank's .lib-link underlines on
+       :hover AND :active) */
+    &:active {
+      text-decoration: var(--button-as-link-hover-text-decoration);
+    }
+
+    &.disabled,
+    &[disabled] {
+      color: var(--button-as-link-color);
+      opacity: var(--button-as-link-disabled-opacity);
+      cursor: default;
+      pointer-events: none;
+      text-decoration: underline;
+    }
+  }
+
+  /* ===== the delete-confirmation popup =================================== */
+
+  .my-credit-cards-popup .modal-footer {
+    text-align: end;
+  }
+
+  /* the Cancel action: the same as-link skin, spaced off the Delete button */
+  .my-credit-cards-popup .action.secondary {
+    display: inline;
+    width: auto;
+    margin-block: 0;
+    margin-inline: 0 var(--indent-base); /* blank: margin-right @indent__base, 20px */
+    padding: var(--button-as-link-padding);
+    line-height: var(--button-as-link-line-height);
+    font-weight: var(--font-weight-regular);
+    color: var(--button-as-link-color);
+    text-decoration: var(--button-as-link-text-decoration);
+    background: none;
+    border: 0;
+    border-radius: 0;
+
+    &:hover {
+      color: var(--button-as-link-hover-color);
+      text-decoration: var(--button-as-link-hover-text-decoration);
+      background: none;
+      border: 0;
+    }
+
+    &:active,
+    &:focus {
+      background: none;
+      border: 0;
+    }
+
+    &:active {
+      text-decoration: var(--button-as-link-hover-text-decoration);
+    }
+
+    &.disabled,
+    &[disabled] {
+      color: var(--button-as-link-color);
+      opacity: var(--button-as-link-disabled-opacity);
+      cursor: default;
+      pointer-events: none;
+      text-decoration: underline;
+    }
+  }
+
+  /* ===== mobile (<= @screen__m, 767px) ===================================
+     In the lib's mobile table card-reflow every cell is stacked with a
+     data-th label drawn by ::before. blank renders only the CURRENT status
+     cell of the row: the non-default .status cells and their ::before labels
+     are hidden, ._default shows as its own block. */
+  @media (--screen-m-max) {
+    .my-credit-cards .table:not(.totals):not(.cart):not(.table-comparison) .status {
+      display: none;
+
+      &::before {
+        display: none;
+      }
+
+      &._default {
+        display: block;
+      }
+    }
+
+    .my-credit-cards .card-type img {
+      vertical-align: middle;
+    }
+  }
+
+  /* ===== desktop (>= @screen__m, 768px) ================================== */
+  @media (--screen-m) {
+    .my-credit-cards .card-type img {
+      display: block;
+    }
+  }
+}
